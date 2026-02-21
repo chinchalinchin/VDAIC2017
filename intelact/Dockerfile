@@ -36,17 +36,18 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get update && apt-get install -y python-dev python python-pip
 
 # Pin pip to the last version that supported Python 2.7 to prevent syntax errors
-RUN pip install "pip<21.0" setuptools wheel --upgrade
+RUN pip install "pip<21.0" "setuptools<45.0" "wheel<0.38" --upgrade
 
 # Vizdoom engine
+# Vizdoom engine pinned to a 2017/2018 era release
 RUN pip --no-cache-dir install \
-    git+https://github.com/mwydmuch/ViZDoom
+    git+https://github.com/mwydmuch/ViZDoom.git@1.1.4
 
 # Swap the GPU wheel for the official CPU-only wheel of TF 0.9.0
 RUN pip --no-cache-dir install \
     https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.9.0-cp27-none-linux_x86_64.whl
     
-RUN pip --no-cache-dir install opencv-python termcolor tqdm subprocess32 msgpack-python msgpack-numpy
+RUN pip --no-cache-dir install "opencv-python==4.2.0.32" termcolor tqdm subprocess32 msgpack-python msgpack-numpy
 
 # Enables X11 sharing and creates user home directory
 ENV USER_NAME cig2017
